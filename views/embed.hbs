@@ -1,0 +1,14 @@
+<h1>Embed {{code}}</h1>
+<p>Language: {{config.lang}}</p>
+<div id="editor" class="embedEditor"></div>
+<script src="/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
+	editor.session.setMode(new JavaScriptMode());
+	editor.setShowPrintMargin(false);
+	editor.session.setValue("{{config.editor}}");
+</script>
