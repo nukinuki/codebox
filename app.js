@@ -1,53 +1,48 @@
-const {Docker} = require('node-docker-api');
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+var sassMiddleware = require('node-sass-middleware');
 
-const express = require('express');
-const app = express();
-const port = 3000;
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+var app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(sassMiddleware({
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public'),
+  indentedSyntax: true, // true = .sass and false = .scss
+  sourceMap: true
+}));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
 });
 
-const dockerTest = function() {
-  const promisifyStream = stream => new Promise((resolve, reject) => {
-    stream.on('data', data => console.log(data.toString()))
-    stream.on('end', resolve)
-    stream.on('error', reject)
-  });
-   
-  const docker = new Docker({ socketPath: '/var/run/docker.sock' });
-  let _container;
-   
-  docker.container.create({
-    Image: 'mhart/alpine-node:slim',
-    Cmd: [ '/bin/sh', '-c', 'tail -f /etc/alpine-release' ],
-    name: 'test'
-  })
-    .then(container => container.start())
-    .then(container => {
-      _container = container;
-      return container.fs.put('./demo-exec-code.js.tar', {
-        path: '/tmp'
-      });
-    })
-    .then(() => {
-      return _container.exec.create({
-        AttachStdout: true,
-        AttachStderr: true,
-        Cmd: [ 'node', '/tmp/demo-exec-code.js' ]
-      })
-    })
-    .then(exec => {
-      return exec.start({ Detach: false })
-    })
-    .then(stream => promisifyStream(stream))
-    .then(() => _container.kill())
-    .then(() => _container.delete({ force: true }))
-    .catch(error => console.log(error));
-}
-// console.log("===== Docker Test =====");
-// dockerTest();
+module.exports = app;

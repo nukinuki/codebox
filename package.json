@@ -4,7 +4,7 @@
   "description": "Embed code editor with docker sandbox code execution",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,13 @@
   },
   "homepage": "https://github.com/nukinuki/codebox#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "hbs": "~4.0.4",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "node-sass-middleware": "0.11.0",
     "node-docker-api": "^1.1.22",
     "socket.io": "^3.1.2"
   }
