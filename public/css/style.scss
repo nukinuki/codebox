@@ -1,24 +1,25 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   margin: 0;
-  padding: 0; }
-
+  padding: 0;
+}
 html, body {
-  height: 100%; }
+  height: 100%;
+}
 
 a {
-  color: #00B7FF; }
-
+  color: #00B7FF;
+}
 .layout {
   width: 100%;
   height: 100%;
-  display: flex; }
-
+  display: flex;
+}
 .embedEditor {
   height: 100%;
   font-size: 18px;
-  width: 50%; }
-
+  width: 50%;
+}
 .embedConsole {
   font-size: 18px;
   color: white;
@@ -28,8 +29,8 @@ a {
   flex-direction: column;
   justify-content: stretch;
   box-sizing: border-box;
-  border-left: 2px solid black; }
-
+  border-left: 2px solid black;
+}
 .consoleButtons {
   height: 50px;
   box-sizing: border-box;
@@ -37,19 +38,20 @@ a {
   flex-grow: 0;
   background: black;
   display: flex;
-  align-items: center; }
-  .consoleButtons .button {
-    margin-right: 10px; }
-
+  align-items: center;
+  .button {
+    margin-right: 10px;
+  }
+}
 .consoleOutput {
   flex-grow: 1;
   padding: 10px;
-  white-space: pre-wrap; }
-
+  white-space: pre-wrap;
+}
 .status {
   font-size: 14px;
-  margin-left: 20px; }
-
+  margin-left: 20px;
+}
 .button {
   background: #ccc;
   color: black;
@@ -59,14 +61,14 @@ a {
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  height: 30px; }
-  .button.is-disabled {
+  height: 30px;
+  &.is-disabled {
     opacity: 0.2;
     pointer-events: none;
-    cursor: default; }
-
+    cursor: default;
+  }
+}
 .button-run {
   background-color: #468646;
-  color: white; }
-
-/*# sourceMappingURL=style.css.map */
+  color: white;
+}

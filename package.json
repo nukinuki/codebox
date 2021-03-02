@@ -4,7 +4,8 @@
   "description": "Embed code editor with docker sandbox code execution",
   "main": "app.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "watch": "nodemon ./bin/www"
   },
   "repository": {
     "type": "git",
@@ -31,7 +32,9 @@
     "morgan": "~1.9.1",
     "node-docker-api": "^1.1.22",
     "node-sass-middleware": "0.11.0",
+    "random-hash": "^4.0.1",
     "socket.io": "^3.1.2",
+    "tar": "^6.1.0",
     "yaml": "^1.10.0"
   }
 }

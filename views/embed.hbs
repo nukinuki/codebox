@@ -1,14 +1,58 @@
-<h1>Embed {{code}}</h1>
-<p>Language: {{config.lang}}</p>
-<div id="editor" class="embedEditor"></div>
+
+<div class="layout">
+  <div id="editor" class="embedEditor"></div>
+  <div class="embedConsole">
+    <div class="consoleButtons">
+      <div class="button button-run" id="run">Run</div>
+      <div class="button button-stop is-disabled" id="stop">Stop</div>
+      <div class="button button-reset" id="reset">Reset</div>
+      <div class="status" id="status">Loading...</div>
+    </div>
+    <div class="consoleOutput" id="console"></div>
+  </div>
+</div>
 <script src="/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="/js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
 <script src="/js/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+<script src="/socket.io/socket.io.js"></script>
+
 <script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/twilight");
-    var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
-	editor.session.setMode(new JavaScriptMode());
-	editor.setShowPrintMargin(false);
-	editor.session.setValue("{{config.editor}}");
+  var editor = ace.edit("editor");
+  editor.setTheme("ace/theme/twilight");
+  var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
+  editor.session.setMode(new JavaScriptMode());
+  editor.setShowPrintMargin(false);
+  editor.session.setValue("{{config.editor}}");
+</script>
+
+<script>
+  var socket = io();
+  function writeToConsole(message) {
+    const elem = document.createElement("div");
+    const text = document.createTextNode(message);
+    elem.appendChild(text);
+    document.getElementById('console').appendChild(elem);
+  }
+  function setConsoleStatus(message) {
+    document.getElementById('status').innerHTML = message;
+  }
+  function clearConsole() {
+    document.getElementById('console').innerHTML = "";
+  }
+  socket.on('console', writeToConsole);
+  socket.on('ready', function(){
+    setConsoleStatus("Ready");
+  });
+  socket.on('done', function(execTime){
+    setConsoleStatus("Complete: " + execTime.toFixed(2) + " sec");
+    document.getElementById("run").classList.remove("is-disabled");
+    document.getElementById("stop").classList.add("is-disabled");
+  });
+  document.getElementById('run').addEventListener('click', function(e) {
+    this.classList.add("is-disabled");
+    document.getElementById("stop").classList.remove("is-disabled");
+    setConsoleStatus("Running...");
+    clearConsole();
+    socket.emit('run', '{{code}}', editor.session.getValue());
+  });
 </script>
