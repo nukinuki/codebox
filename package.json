@@ -1,0 +1,30 @@
+{
+  "name": "codebox",
+  "version": "0.0.1",
+  "description": "Embed code editor with docker sandbox code execution",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nukinuki/codebox.git"
+  },
+  "keywords": [
+    "nodejs",
+    "docker",
+    "ace",
+    "sandbox"
+  ],
+  "author": "Denis Korovkin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nukinuki/codebox/issues"
+  },
+  "homepage": "https://github.com/nukinuki/codebox#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-docker-api": "^1.1.22",
+    "socket.io": "^3.1.2"
+  }
+}
