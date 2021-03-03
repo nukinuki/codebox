@@ -13,16 +13,17 @@
 </div>
 <script src="/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="/js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
-<script src="/js/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/ace/mode-{{config.editorMode}}.js" type="text/javascript" charset="utf-8"></script>
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
   var editor = ace.edit("editor");
-  editor.setTheme("ace/theme/twilight");
-  var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
+  var editorContent = '{{{config.editor}}}';
+  editor.setTheme("ace/theme/{{config.theme}}");
+  var JavaScriptMode = ace.require("ace/mode/{{config.editorMode}}").Mode;
   editor.session.setMode(new JavaScriptMode());
   editor.setShowPrintMargin(false);
-  editor.session.setValue("{{config.editor}}");
+  editor.session.setValue(editorContent);
 </script>
 
 <script>
@@ -48,11 +49,26 @@
     document.getElementById("run").classList.remove("is-disabled");
     document.getElementById("stop").classList.add("is-disabled");
   });
+  socket.on('timeout', function(timeout){
+    setConsoleStatus("Timeout: " + timeout + " sec");
+    writeToConsole("ERROR: Script execution took too long and was interrupted by timeout");
+    document.getElementById("run").classList.remove("is-disabled");
+    document.getElementById("stop").classList.add("is-disabled");
+  });
+  document.getElementById('reset').addEventListener('click', function(e) {
+    editor.session.setValue(editorContent);
+  });
   document.getElementById('run').addEventListener('click', function(e) {
     this.classList.add("is-disabled");
     document.getElementById("stop").classList.remove("is-disabled");
     setConsoleStatus("Running...");
     clearConsole();
     socket.emit('run', '{{code}}', editor.session.getValue());
+  });
+  document.getElementById('stop').addEventListener('click', function(e) {
+    this.classList.add("is-disabled");
+    document.getElementById("run").classList.remove("is-disabled");
+    setConsoleStatus("Stopped");
+    socket.emit('stop');
   });
 </script>

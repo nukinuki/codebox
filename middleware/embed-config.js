@@ -8,7 +8,7 @@ function loadConfig(req, res, next) {
 		return next();
 	}
 
-	res.configData = result.config;
+	res.configData = result;
 	next();
 }
 

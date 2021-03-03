@@ -1,0 +1,16 @@
+# PHP Course. 001. PHP Demo
+lang: php
+editor:
+  - '<?php'
+  - '// Rotating words'
+  - '$text = "Welcome to PHP code editor!";'
+  - '$arr = explode(" ",$text);'
+  - 'echo str_repeat("=", strlen($text)).PHP_EOL;'
+  - 'for($i = 0; $i < count($arr); $i++) {'
+  - '    $arr[] = array_shift($arr);'
+  - '    echo ($i+1).". ".implode(" ", $arr).PHP_EOL;'
+  - '}'
+  - 'echo str_repeat("=", strlen($text)).PHP_EOL;'
+  - ''
+sandbox: php
+timeout: 10

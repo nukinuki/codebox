@@ -4,4 +4,4 @@ editor:
   - '// Write your code here'
   - ''
 sandbox: nodejs
-exectime: 10
+timeout: 10
